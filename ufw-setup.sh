@@ -1,6 +1,11 @@
 
 #!/bin/bash
 
+  #							#
+###	SCRIPT FOR INSTALLING, SETTING UFW RULES	###
+###	     AND STARTING UFW AS SERVICE		###
+  #							#
+
 # Colors
 error="\033[1;31m"
 info="\033[1;32m"
@@ -116,9 +121,9 @@ detect_init_system_enable_UFW () {
 	esac
 }
 
-#	HERE YOU CAN MODIFY YOUR UFW RULES	#
-#
-# ufw rules -> modify this function as you see fit
+#		HERE YOU CAN MODIFY YOUR UFW RULES		#
+
+# ufw_rules -> modify "#rules" section of this function as you see fit  
 
 ufw_rules () {
 	echo -e "[ $warning WARNING $wipe ] Applying UFW rules from ufw_rules function." 
