@@ -16,8 +16,8 @@ if [ "$EUID" -ne 0 ]
 fi
 
 # info
-echo -e "$label STARTING UFW SETUP $wipe_label"
 echo ""
+echo -e "$label STARTING UFW SETUP $wipe_label"
 
 # detect distro
 detect_distro () {
