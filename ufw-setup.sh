@@ -18,7 +18,7 @@ wipe_label="\e[0m"
 
 # check for sudo
 if [ "$EUID" -ne 0 ]
-	then echo -e "[ $error X $wipe ] $error Please run as root. Try run with sudo. $wipe"
+	then echo -e "[ $error X $wipe ] $error You need to be superuser or root to run this script. Try 'sudo YOUR_COMMAND'.$wipe"
 	exit
 fi
 
