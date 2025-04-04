@@ -4,10 +4,12 @@
 # Colors
 error="\033[1;31m"
 info="\033[1;32m"
-label="\e[4;32m"
-wipe_label="\e[0m"
 warning="\033[1;33m"
 wipe="\033[0m"
+
+# Label color
+label="\e[4;32m"
+wipe_label="\e[0m"
 
 # check for sudo
 if [ "$EUID" -ne 0 ]
@@ -17,7 +19,7 @@ fi
 
 # info
 echo ""
-echo -e "$label STARTING UFW SETUP $wipe_label"
+echo -e "$label STARTING UFW SETUP SCRIPT $wipe_label"
 
 # detect distro
 detect_distro () {
@@ -32,20 +34,23 @@ detect_distro () {
 
 	case "$DISTRO" in
 		ubuntu|debian)
-			INSTALL_CMD="apt-get install ufw"
+			INSTALL_CMD="apt-get install -y ufw"
 			CHECK_CMD="apt list --installed | grep ufw"
 			;;
 		centos|rhel|fedora)
-			#INSTALL_CMD=""
-			#TODO add rhel command
-			#CHECK_CMD="dnf list installed | grep ufw"
+			INSTALL_CMD="dnf install -y ufw"
+			CHECK_CMD="dnf list installed | grep ufw"
+			;;
+		opensuse|suse)
+			INSTALL_CMD="zypper install -y ufw"
+			CHECK_CMD="zypper search --installed-only ufw"
 			;;
 		arch)
-			INSTALL_CMD="pacman -S ufw"
+			INSTALL_CMD="pacman -Sy ufw"
 			CHECK_CMD="pacman -Q | grep ufw"
 			;;
 		void)
-			INSTALL_CMD="xbps-install -S ufw"
+			INSTALL_CMD="xbps-install -Sy ufw"
 			CHECK_CMD="xbps-query -l | grep ufw"
 			;;
 		*)
@@ -56,7 +61,7 @@ detect_distro () {
 	esac
 }
 
-# check if installed and install if not
+# check if ufw is installed and install if not
 check_and_install () {
 	echo -e "[ $info INFO $wipe ] Installing UFW and its dependencies "
 	if eval $CHECK_CMD &>/dev/null; then
@@ -69,7 +74,7 @@ check_and_install () {
 
 # enable ufw service 
 detect_init_system_enable_UFW () {
-	# check innit system
+	# detect innit system
 	INIT_SYSTEM=$(ps --no-headers -o comm 1)
 
 	case "$INIT_SYSTEM" in
