@@ -28,6 +28,7 @@ echo -e "$label STARTING UFW SETUP SCRIPT $wipe_label"
 
 # detect distro
 detect_distro () {
+	# takes name of distribution from '/etc/os-release' file
 	if [ -f /etc/os-release ]; then
 		. /etc/os-release
 		DISTRO=$ID
@@ -43,8 +44,8 @@ detect_distro () {
 			CHECK_CMD="apt list --installed | grep ufw"
 			;;
 		centos|rhel|fedora)
-			INSTALL_CMD="dnf install -y ufw"
-			CHECK_CMD="dnf list installed | grep ufw"
+			INSTALL_CMD="yum install -y ufw"
+			CHECK_CMD="yum list installed | grep ufw"
 			;;
 		opensuse|suse)
 			INSTALL_CMD="zypper install -y ufw"
@@ -69,6 +70,7 @@ detect_distro () {
 # check if ufw is installed and install if not
 check_and_install () {
 	echo -e "[ $info INFO $wipe ] Installing UFW and its dependencies "
+	# chcecks if ufw package is installed
 	if eval $CHECK_CMD &>/dev/null; then
 		echo -e "[ $warning WARNING $wipe ] UFW is already installed."
 	else
@@ -127,9 +129,11 @@ detect_init_system_enable_UFW () {
 
 ufw_rules () {
 	echo -e "[ $warning WARNING $wipe ] Applying UFW rules from ufw_rules function." 
-	# rules
-#	ufw default deny incoming
-#	ufw default allow outgoing
+	
+	### most basic rules added as example ###
+	## rules ##
+	#ufw default deny incoming
+	#ufw default allow outgoing
 
 	# enable ufw firewall
 	echo ""
